@@ -1,5 +1,7 @@
 class Player {
-    constructor() {
+    constructor({
+        collisionBlocks = []
+    }) {
         this.position = {
             x: 100,
             y: 100
@@ -16,8 +18,11 @@ class Player {
 
         this.gravity = .2;
 
-        this.width = 100;
-        this.height = 100;
+        this.collisionBlocks = collisionBlocks;
+        console.log(collisionBlocks);
+
+        this.width = 64;
+        this.height = 64;
         this.sides = {
             bottom: this.position.y + this.height,
 
