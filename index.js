@@ -20,7 +20,39 @@ const backgroundLevel1 = new Sprite({
 const player = new Player({
     collisionBlocks,
     imageSrc: './img/king/idle.png',
-    frameRate: 11
+    frameRate: 11,
+    animations: {
+        idleRight: {
+            frameRate: 11,
+            frameBuffer: 6,
+            loop: true,
+            imageSrc: './img/king/idle.png',
+        },
+        idleleft: {
+            frameRate: 11,
+            frameBuffer: 6,
+            loop: true,
+            imageSrc: './img/king/idleLeft.png',
+        },
+        runRight: {
+            frameRate: 8,
+            frameBuffer: 12,
+            loop: true,
+            imageSrc: './img/king/runRight.png',
+        },
+        runLeft: {
+            frameRate: 8,
+            frameBuffer: 12,
+            loop: true,
+            imageSrc: './img/king/runLeft.png',
+        },
+        enterDoor: {
+            frameRate: 8,
+            frameBuffer: 6,
+            loop: true,
+            imageSrc: './img/king/enterDoor.png',
+        },
+    }
 });
 
 const keys = {
@@ -47,10 +79,23 @@ function animate() {
     player.velocity.x = 0;
     if (keys.d.pressed && keys.a.pressed) {
         player.velocity.x = 0;
+        if (player.direction === 'right') {
+            player.switchSprite('idleRight');
+        } else {
+            player.switchSprite('idleleft');
+        } 
     } else if (keys.a.pressed) {
+        player.switchSprite('runLeft');
         player.velocity.x = -4;
+        player.direction = 'left';
     } else if (keys.d.pressed) {
+        player.switchSprite('runRight');
         player.velocity.x = 4;
+        player.direction = 'right';
+    } else if (player.direction === 'right' && player.velocity.x == 0) {
+        player.switchSprite('idleRight');
+    } else {
+        player.switchSprite('idleleft');
     }
 
     player.draw();
