@@ -1,5 +1,5 @@
 class Sprite {
-    constructor({position, imageSrc, frameRate = 1, animations, frameBuffer = 2, loop = true, autoplay = true}) {
+    constructor({position, imageSrc, frameRate = 1, animations, frameBuffer = 2, loop = true, autoplay = true, locked = false}) {
         this.position = position;
         this.image = new Image();
         this.image.onload = () => {
@@ -16,6 +16,8 @@ class Sprite {
         this.animations = animations;
         this.loop = loop;
         this.autoplay = autoplay;
+        this.currentAnimation;
+        this.locked = locked;
 
         if (this.animations) {
             for (let key in this.animations) {
@@ -69,6 +71,13 @@ class Sprite {
             } else if (this.loop) {
                 this.currentFrame = 0;
             }
+        }
+        if (this.currentAnimation?.onComplete) {
+            if (this.currentFrame === this.frameRate - 1 && !this.currentAnimation.isActive) {
+                this.currentAnimation.onComplete();
+                this.currentAnimation.isActive = true;
+            }
+            
         }
         
     }

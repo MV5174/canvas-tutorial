@@ -59,7 +59,7 @@ class Player extends Sprite {
             if (player.direction === 'right') {
                 player.switchSprite('idleRight');
             } else {
-                player.switchSprite('idleleft');
+                player.switchSprite('idleLeft');
             } 
         } else if (keys.a.pressed) {
             player.switchSprite('runLeft');
@@ -72,7 +72,7 @@ class Player extends Sprite {
         } else if (player.direction === 'right' && player.velocity.x == 0) {
             player.switchSprite('idleRight');
         } else {
-            player.switchSprite('idleleft');
+            player.switchSprite('idleLeft');
         }
     }
 
@@ -85,6 +85,7 @@ class Player extends Sprite {
         this.frameRate = this.animations[name].frameRate;
         this.frameBuffer = this.animations[name].frameBuffer;
         this.loop = this.animations[name].loop;
+        this.currentAnimation = this.animations[name];
     }
 
     updateHitbox() {
