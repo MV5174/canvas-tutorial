@@ -48,12 +48,26 @@ const player = new Player({
         },
         enterDoor: {
             frameRate: 8,
-            frameBuffer: 6,
-            loop: true,
+            frameBuffer: 12,
+            loop: false,
             imageSrc: './img/king/enterDoor.png',
         },
     }
 });
+
+const doors = [
+    new Sprite({
+        position: {
+            x: 768,
+            y: 272
+        },
+        imageSrc: './img/doorOpen.png',
+        frameRate: 5,
+        frameBuffer: 15,
+        loop: false,
+        autoplay: false
+    })
+]
 
 const keys = {
     w: {
@@ -76,28 +90,13 @@ function animate() {
         collisionBlock.draw();
     })
 
-    player.velocity.x = 0;
-    if (keys.d.pressed && keys.a.pressed) {
-        player.velocity.x = 0;
-        if (player.direction === 'right') {
-            player.switchSprite('idleRight');
-        } else {
-            player.switchSprite('idleleft');
-        } 
-    } else if (keys.a.pressed) {
-        player.switchSprite('runLeft');
-        player.velocity.x = -4;
-        player.direction = 'left';
-    } else if (keys.d.pressed) {
-        player.switchSprite('runRight');
-        player.velocity.x = 4;
-        player.direction = 'right';
-    } else if (player.direction === 'right' && player.velocity.x == 0) {
-        player.switchSprite('idleRight');
-    } else {
-        player.switchSprite('idleleft');
-    }
+    doors.forEach((door) => {
+        door.draw();
+    })
 
+    player.velocity.x = 0;
+
+    player.handleInput(keys);
     player.draw();
     player.update();
 
