@@ -10,6 +10,10 @@ class Player {
             y: 0
         }
 
+        this.jumps = 0;
+
+        this.jumpCount = 2;
+
         this.gravity = .2;
 
         this.width = 100;
@@ -26,14 +30,18 @@ class Player {
     }
 
     update() {
+        this.position.x += this.velocity.x;
         this.position.y += this.velocity.y;
         this.sides.bottom = this.position.y + this.height;
 
         //Above bottom of canvas
         if (this.sides.bottom + this.velocity.y < canvas.height) {
             this.velocity.y += this.gravity;
+        } else if (this.sides.bottom + this.velocity.y < canvas.height - 2) {
+            this.jumps = 0;
         } else {
             this.velocity.y = 0;
+            this.jumps = 0;
         }
     }
 
