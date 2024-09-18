@@ -3,8 +3,8 @@ class Player {
         collisionBlocks = []
     }) {
         this.position = {
-            x: 100,
-            y: 100
+            x: 200,
+            y: 200
         }
 
         this.velocity = {
@@ -36,17 +36,69 @@ class Player {
 
     update() {
         this.position.x += this.velocity.x;
-        this.position.y += this.velocity.y;
-        this.sides.bottom = this.position.y + this.height;
 
-        //Above bottom of canvas
-        if (this.sides.bottom + this.velocity.y < canvas.height) {
-            this.velocity.y += this.gravity;
-        } else if (this.sides.bottom + this.velocity.y < canvas.height - 2) {
-            this.jumps = 0;
-        } else {
-            this.velocity.y = 0;
-            this.jumps = 0;
+        this.checkForHorizontalCollisions();
+        this.applyGravity()
+        this.checkforVerticalCollisions();
+    }
+
+    checkForHorizontalCollisions() {
+        for (let i = 0; i < this.collisionBlocks.length; i++) {
+            const collisionBlock = this.collisionBlocks[i];
+
+            //If a collision exists
+            if (
+                this.position.x <= collisionBlock.position.x + collisionBlock.width &&
+                this.position.x + this.width >= collisionBlock.position.x &&
+                this.position.y + this.height >= collisionBlock.position.y &&
+                this.position.y <= collisionBlock.position.y + collisionBlock.height
+            ) {
+                //Collision on x axis going to the left
+                if (this.velocity.x < 0) {
+                    this.position.x = collisionBlock.position.x + collisionBlock.width + 0.01;
+                    break
+                }
+
+                //Collision on x axis going to the right
+                if (this.velocity.x > 0) {
+                    this.position.x = collisionBlock.position.x - this.width - 0.01;
+                    break
+                }
+            }
+        }
+    }
+
+    applyGravity() {
+        this.velocity.y += this.gravity;
+        this.position.y += this.velocity.y;
+    }
+
+    checkforVerticalCollisions() {
+        for (let i = 0; i < this.collisionBlocks.length; i++) {
+            const collisionBlock = this.collisionBlocks[i];
+
+            //If a collision exists
+            if (
+                this.position.x <= collisionBlock.position.x + collisionBlock.width &&
+                this.position.x + this.width >= collisionBlock.position.x &&
+                this.position.y + this.height >= collisionBlock.position.y &&
+                this.position.y <= collisionBlock.position.y + collisionBlock.height
+            ) {
+                //Collision on y axis going up
+                if (this.velocity.y < 0) {
+                    this.velocity.y = 0;
+                    this.position.y = collisionBlock.position.y + collisionBlock.height + 0.01;
+                    break
+                }
+
+                //Collision on y axis going down
+                if (this.velocity.y > 0) {
+                    this.velocity.y
+                    this.position.y = collisionBlock.position.y - this.height - 0.01;
+                    this.jumps = 0;
+                    break
+                }
+            }
         }
     }
 
