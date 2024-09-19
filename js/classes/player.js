@@ -34,14 +34,14 @@ class Player extends Sprite {
 
     update() {
         //Blue box for collision
-        //c.fillStyle = 'rgba(0, 0, 255, .5)';
-        //c.fillRect(this.position.x, this.position.y, this.width, this.height)
+        c.fillStyle = 'rgba(0, 0, 255, .5)';
+        c.fillRect(this.position.x, this.position.y, this.width, this.height)
         this.position.x += this.velocity.x;
 
         this.updateHitbox();
 
-        //c.fillStyle = 'rgba(0, 255, 0, .5)';
-        //c.fillRect(this.hitbox.position.x, this.hitbox.position.y, this.hitbox.width, this.hitbox.height)
+        c.fillStyle = 'rgba(0, 255, 0, .5)';
+        c.fillRect(this.hitbox.position.x, this.hitbox.position.y, this.hitbox.width, this.hitbox.height)
 
         this.checkForHorizontalCollisions();
         this.applyGravity()
@@ -114,6 +114,7 @@ class Player extends Sprite {
                 if (this.velocity.x < 0) {
                     const offset = this.hitbox.position.x - this.position.x;
                     this.position.x = collisionBlock.position.x + collisionBlock.width - offset + 0.01;
+                    this.jumps--;
                     break
                 }
 
@@ -121,6 +122,7 @@ class Player extends Sprite {
                 if (this.velocity.x > 0) {
                     const offset = this.hitbox.position.x - this.position.x + this.hitbox.width;
                     this.position.x = collisionBlock.position.x - offset - 0.01;
+                    this.jumps--;
                     break
                 }
             }
